@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --color-paper: #F6F5EF;
+  --color-paper-dim: #EFEDE3;
+  --color-ink: #16211B;
+  --color-ink-soft: #3C463F;
+  --color-night: #0E1F19;
+  --color-night-soft: #17332A;
+  --color-copper: #B5602E;
+  --color-copper-dark: #904B24;
+  --color-copper-light: #E3A379;
+  --color-canopy: #3F6B4E;
+  --color-canopy-light: #6B9A79;
+  --color-marigold: #E3A233;
+  --color-marigold-light: #F1C976;
+  --color-rule: #D9D5C6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background: var(--color-marigold-light);
+  color: var(--color-night);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-copper);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
