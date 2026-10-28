@@ -1,37 +1,94 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { navLinks } from "./data";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowRight, Menu, X } from "lucide-react";
+import Logo from "./Logo";
+import { groupOrder, type NavItem } from "../content/sections";
 
-export default function MobileNav() {
+export default function MobileNav({ items }: { items: NavItem[] }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   return (
     <div className="md:hidden">
       <button
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label="Open menu"
         aria-expanded={open}
-        onClick={() => setOpen((v) => !v)}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-ink/15 text-ink"
+        onClick={() => setOpen(true)}
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white"
       >
-        {open ? <X size={20} /> : <Menu size={20} />}
+        <Menu size={20} />
       </button>
 
       {open && (
-        <div className="absolute inset-x-0 top-full z-40 border-t border-rule bg-paper px-6 py-6 shadow-lg">
-          <nav className="flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-3 py-3 font-display text-lg text-ink hover:bg-paper-dim"
-              >
-                {link.label}
-              </a>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-navy text-white"
+        >
+          <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+            <Logo />
+            <button
+              autoFocus
+              aria-label="Close menu"
+              onClick={() => setOpen(false)}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <nav aria-label="Sections" className="flex-1 px-6 py-8">
+            {groupOrder.map((group) => (
+              <div key={group} className="mb-9 last:mb-0">
+                <p className="eyebrow text-copper-light">{group}</p>
+                <ul className="mt-2 divide-y divide-white/10">
+                  {items
+                    .filter((item) => item.group === group)
+                    .map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setOpen(false)}
+                          aria-current={pathname === item.href ? "page" : undefined}
+                          className="flex items-center justify-between gap-4 py-3.5 font-display text-xl aria-[current=page]:text-copper-light"
+                        >
+                          {item.label}
+                          <ArrowRight size={16} className="shrink-0 text-white/35" />
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
             ))}
           </nav>
+
+          <div className="border-t border-white/10 px-6 py-6">
+            <Link
+              href="/contacts"
+              onClick={() => setOpen(false)}
+              className="block rounded-full bg-copper py-3.5 text-center font-semibold transition-colors hover:bg-copper-dark"
+            >
+              Subscribe to print
+            </Link>
+          </div>
         </div>
       )}
     </div>

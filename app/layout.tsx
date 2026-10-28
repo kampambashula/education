@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Header from "./components/Header";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+import { navItems } from "./content/sections";
 import "./globals.css";
 
 const fraunces = localFont({
@@ -21,9 +25,12 @@ const workSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Education Today Zambia — News shaping Zambia's classrooms",
+  title: {
+    default: "Education Today Zambia — News, intelligence & innovation",
+    template: "%s · Education Today Zambia",
+  },
   description:
-    "Education Today Zambia covers classroom learning, teacher development, curriculum reform, education financing, examinations and tertiary pathways — with data and comparisons across Africa and beyond.",
+    "A premier B2B multimedia platform and news outlet delivering comprehensive coverage of the Zambian education sector, from early childhood to adult education.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -32,7 +39,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${fraunces.variable} ${workSans.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
+      <body className="min-h-full flex flex-col bg-paper text-ink">
+        <Header />
+        <NavBar items={navItems} />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }

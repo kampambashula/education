@@ -1,25 +1,25 @@
-import Header from "./components/Header";
 import Hero from "./components/Hero";
+import Pillars from "./components/Pillars";
+import AboutStrip from "./components/AboutStrip";
+import LatestNews from "./components/LatestNews";
 import StatsBand from "./components/StatsBand";
-import Categories from "./components/Categories";
-import AfricaComparison from "./components/AfricaComparison";
-import Audiences from "./components/Audiences";
+import SectionsGrid from "./components/SectionsGrid";
+import AwardsFeature from "./components/AwardsFeature";
+import Publications from "./components/Publications";
 import Newsletter from "./components/Newsletter";
-import Footer from "./components/Footer";
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <main className="flex-1">
-        <Hero />
-        <StatsBand />
-        <Categories />
-        <AfricaComparison />
-        <Audiences />
-        <Newsletter />
-      </main>
-      <Footer />
+      <Hero />
+      <Pillars overlap />
+      <AboutStrip />
+      <LatestNews />
+      <StatsBand />
+      <SectionsGrid />
+      <AwardsFeature />
+      <Publications />
+      <Newsletter />
     </>
   );
 }
